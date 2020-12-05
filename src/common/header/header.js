@@ -1,3 +1,4 @@
+//Import section
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./header.css";
@@ -6,6 +7,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AppContext from "../app-context";
 import PROFILE_ICON from "../../assets/profile_icon.png";
 
+//Header implementation
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, searchKey, setSearchKey } = useContext(
     AppContext
@@ -86,5 +88,5 @@ const Header = () => {
     </div>
   );
 };
-
+//export-the- complete header
 export default Header;
