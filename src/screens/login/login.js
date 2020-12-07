@@ -1,4 +1,3 @@
-//Import section
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,7 +8,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-//Import header and login CSS
 import Header from '../../common/header/Header';
 import './Login.css'
 
