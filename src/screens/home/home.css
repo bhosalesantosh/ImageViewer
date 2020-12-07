@@ -1,35 +1,27 @@
-.home-container {
+.home-item-main-container{
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+.home-item-profile-container{
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
-.home-container .MuiCard-root {
-  width: calc(100vw/2 - 40px);
-  margin: 20px;
+.horizpontal-rule{
+  margin:10px;
+  background-color:"#FF5722"
 }
-
-.home-container .MuiCard-root img {
-  width: 100%;
-}
-.username-date {
+.home-item-profile-head{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
-  height: 42px;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
-.hashtag {
-  color: blue;
-  cursor: pointer;
-  padding-right: 10px;
-}
-.likes-container {
-  cursor: pointer;
+.row{
   display: flex;
-  align-items: center;
-  padding: 20px 0px;
-}
-.comments-container{
-  display: flex;
-  padding-top: 20px;  
+  flex-direction: row;
 }

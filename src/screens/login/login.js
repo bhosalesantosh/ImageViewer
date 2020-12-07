@@ -1,126 +1,98 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  FormControl,
-  Input,
-  InputLabel,
-  Button
-} from "@material-ui/core";
-import "./login.css";
-import AppContext from "../../common/app-context";
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-const USER_DETAILS = {
-  userName: "user",
-  password: "user",
-  access_token:
-    ""
-};
-const Login = () => {
-  const { setIsLoggedIn } = useContext(AppContext);
-  const history = useHistory();
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState({
-    login: false,
-    userName: false,
-    password: false
-  });
+import Header from '../../common/header/Header';
+import './Login.css'
 
-  const login = () => {
-    if (!username || !password) {
-      setError({
-        ...error,
-        userName: !username,
-        password: !password
-      });
-    } else if (
-      username === USER_DETAILS.userName &&
-      password === USER_DETAILS.password
-    ) {
-      setError({
-        ...error,
-        login: false
-      });
-      sessionStorage.setItem("access_token", USER_DETAILS.access_token);
-      history.push("/home");
-      setIsLoggedIn(true)
-    } else {
-      setError({
-        ...error,
-        login: true
-      });
+const styles = {
+    card: {
+        padding: '15px',
+        position: 'relative',
+        top: '90px',
+        left: '50%',
+        width: '325px',
+        transform: 'translateX(-50%)',
+    },
+    title: {
+        fontSize: 20
     }
-  };
-
-  return (
-    <div className="login-container">
-      <div className="login-form-conatiner">
-        <Card>
-          <CardContent>
-            <div className="login-form">
-              <h2>LOGIN</h2>
-              <FormControl>
-                <InputLabel htmlFor="my-input">Username *</InputLabel>
-                <Input
-                  id="my-input"
-                  aria-describedby="my-helper-text"
-                  value={username}
-                  onChange={event => {
-                    setError({
-                      ...error,
-                      login: false,
-                      userName: false
-                    });
-                    setUserName(event.target.value);
-                  }}
-                />
-                {error.userName && (
-                  <span className="error-message">required</span>
-                )}
-              </FormControl>
-              <FormControl>
-                <InputLabel htmlFor="my-input">Password *</InputLabel>
-                <Input
-                  type="password"
-                  id="my-input"
-                  value={password}
-                  aria-describedby="my-helper-text"
-                  onChange={event => {
-                    setError({
-                      ...error,
-                      login: false,
-                      password: false
-                    });
-                    setPassword(event.target.value);
-                  }}
-                />
-                {error.password && (
-                  <span className="error-message">required</span>
-                )}
-              </FormControl>
-              {error.login && (
-                <span className="error-message">
-                  Incorrect username and/or password
-                </span>
-              )}
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth={false}
-                  onClick={login}
-                >
-                  LOGIN
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
 };
+
+class Login extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            username: "",
+            usernameRequired: "dispNone",
+            password: "",
+            passwordRequired: "dispNone",
+            incorrectUsernamePassword: "dispNone",
+            loggedIn: sessionStorage.getItem('access-token') == null ? false : true
+        };
+    }
+
+    loginClickHandler = () => {
+        this.setState({ incorrectUsernamePassword: "dispNone" });
+        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+
+        if (this.state.username === "" || this.state.password === "") { return }
+
+        if (this.state.username === "admin" && this.state.password === "admin") {
+            sessionStorage.setItem('username','admin');
+            sessionStorage.setItem('access-token', 'IGQVJVazNtNEVsX3ctbXpGaS1JbVMzYk91VlVCUFpXODltQU0zOGpFR0hyOW4xeThkcHI2aFE1REVOaTJBTVdTbWEtb0RSU0ZArZA0hqdWplX3Q2eFJDLVl4SmhvenRFQmNTdGptLTNiZAUV1NFlaMzI2ZAwZDZD');
+            this.setState({ loggedIn: true });
+            this.navigateToHome();
+        } else {
+            this.setState({ incorrectUsernamePassword: "dispBlock" });
+        }
+    }
+
+    navigateToHome = () =>{
+      this.props.history.push('/home');
+    }
+
+    inputUsernameChangeHandler = (e) => {
+        this.setState({ username: e.target.value })
+    }
+
+    inputPasswordChangeHandler = (e) => {
+        this.setState({ password: e.target.value })
+    }
+
+    render() {
+        return (
+            <div className="main-container">
+                <Header
+                  screen={"Login"}/>
+                <Card style={styles.card}>
+                    <CardContent>
+                        <Typography style={styles.title}> LOGIN </Typography><br />
+                        <FormControl required style={{width: '100%'}}>
+                            <InputLabel htmlFor="username"> Username </InputLabel>
+                            <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
+                            <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
+                        </FormControl><br /><br />
+                        <FormControl required style={{width: '100%'}}>
+                            <InputLabel htmlFor="password"> Password </InputLabel>
+                            <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} />
+                            <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
+                        </FormControl><br /><br />
+                        <div className={this.state.incorrectUsernamePassword}><span className="red"> Incorrect username and/or password </span></div><br />
+                        <Button variant="contained" color="primary" onClick={this.loginClickHandler}> LOGIN </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
+}
 
 export default Login;
